@@ -7,7 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpConnectionToURL {
-
+	
+	//fetches the url and return the information as a String
 	public String fetchUserInformation(URL url) throws IOException {
 		HttpURLConnection request = (HttpURLConnection) url.openConnection();
 		request.setRequestMethod("GET");

@@ -22,7 +22,7 @@ public class Mapper {
 		});
 	}
 
-	public String pojoStringToJson(Object stringToJsonAsString)
+	public String objectToJson(Object stringToJsonAsString)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		return mapper.writeValueAsString(stringToJsonAsString);
 	}

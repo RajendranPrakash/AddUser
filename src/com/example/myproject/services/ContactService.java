@@ -90,24 +90,16 @@ public class ContactService {
 		// return user;
 	}
 
-	public Object fetchUserInformationWithLimit(int limit, String startCursor) {
+	public QueryResultList<Entity> fetchUserInformationWithLimit(int limit, String startCursor) {
 
 		FetchOptions fetchOptionsLimit = FetchOptions.Builder.withLimit(limit);
 		if (startCursor != null) {
-			try {
-				fetchOptionsLimit.startCursor(Cursor.fromWebSafeString(startCursor));
-			} catch (IllegalArgumentException exceptionObject) {
-				System.out.println("decode problem");
-				return exceptionObject;
-			}
+			fetchOptionsLimit.startCursor(Cursor.fromWebSafeString(startCursor));
 		}
 		Query query = new Query("Contacts");
 		PreparedQuery preparedQuery = entityStore.prepare(query);
-		try {
-			return preparedQuery.asQueryResultList(fetchOptionsLimit);
-		} catch (IllegalArgumentException exceptionObject) {
-			System.out.println("encode problem");
-			return exceptionObject;
-		}
+
+		return preparedQuery.asQueryResultList(fetchOptionsLimit);
+
 	}
 }

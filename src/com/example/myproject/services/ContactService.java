@@ -1,12 +1,17 @@
 package com.example.myproject.services;
 
 import com.example.myproject.pojo.UsersInformation;
+import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.QueryResultList;
 
 public class ContactService {
 
@@ -83,5 +88,25 @@ public class ContactService {
 			// return newEntity;
 		}
 		// return user;
+	}
+
+	public QueryResultList<Entity> fetchUserInformationWithLimit(int limit, String startCursor) {
+
+		FetchOptions fetchOptionsLimit = FetchOptions.Builder.withLimit(limit);
+		if (startCursor != null) {
+			try {
+			fetchOptionsLimit.startCursor(Cursor.fromWebSafeString(startCursor));
+			} catch(Exception e)
+			{
+				return null;
+			}
+		}
+		Query query = new Query("Contacts");
+		PreparedQuery preparedQuery = entityStore.prepare(query);
+		try {
+			return preparedQuery.asQueryResultList(fetchOptionsLimit);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 	}
 }

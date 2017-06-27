@@ -22,12 +22,12 @@ public class UsersServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int limit = Integer.parseInt(req.getParameter("limit"));
-		String startCursor = req.getParameter("cursor");
-
-		ContactService contactService = new ContactService();
 		Map<String, Object> jsonResult = new LinkedHashMap<String, Object>();
 		try {
+			int limit = Integer.parseInt(req.getParameter("limit"));
+			String startCursor = req.getParameter("cursor");
+
+			ContactService contactService = new ContactService();
 			QueryResultList<Entity> queryResults = contactService.fetchUserInformationWithLimit(limit, startCursor);
 
 			jsonResult.put("ok", true);
@@ -59,7 +59,7 @@ public class UsersServlet extends HttpServlet {
 			jsonResult.put("ok", false);
 			jsonResult.put("msg", exceptionObject);
 		}
-		
+
 		resp.setContentType("application/json");
 		resp.getWriter().println(new Mapper().objectToJson(jsonResult));
 

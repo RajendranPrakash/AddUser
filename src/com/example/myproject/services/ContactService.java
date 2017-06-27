@@ -79,10 +79,10 @@ public class ContactService {
 		if (user == null) {
 			// System.out.println("user is going to create");
 			Entity newEntity = new Entity("Contacts", userInformation.getEmail());
-			newEntity.setProperty("UserName", userInformation.getEmail());
-			newEntity.setProperty("Name", userInformation.getName());
-			newEntity.setProperty("Email", userInformation.getEmail());
-			newEntity.setProperty("Password", userInformation.getPassword());
+			newEntity.setProperty("userName", userInformation.getEmail());
+			newEntity.setProperty("name", userInformation.getName());
+			newEntity.setProperty("email", userInformation.getEmail());
+			newEntity.setProperty("password", userInformation.getPassword());
 			entityStore.put(newEntity);
 			// System.out.println("new user is create");
 			// return newEntity;
@@ -90,23 +90,24 @@ public class ContactService {
 		// return user;
 	}
 
-	public QueryResultList<Entity> fetchUserInformationWithLimit(int limit, String startCursor) {
+	public Object fetchUserInformationWithLimit(int limit, String startCursor) {
 
 		FetchOptions fetchOptionsLimit = FetchOptions.Builder.withLimit(limit);
 		if (startCursor != null) {
 			try {
-			fetchOptionsLimit.startCursor(Cursor.fromWebSafeString(startCursor));
-			} catch(Exception e)
-			{
-				return null;
+				fetchOptionsLimit.startCursor(Cursor.fromWebSafeString(startCursor));
+			} catch (IllegalArgumentException exceptionObject) {
+				System.out.println("decode problem");
+				return exceptionObject;
 			}
 		}
 		Query query = new Query("Contacts");
 		PreparedQuery preparedQuery = entityStore.prepare(query);
 		try {
 			return preparedQuery.asQueryResultList(fetchOptionsLimit);
-		} catch (IllegalArgumentException e) {
-			return null;
+		} catch (IllegalArgumentException exceptionObject) {
+			System.out.println("encode problem");
+			return exceptionObject;
 		}
 	}
 }

@@ -41,7 +41,7 @@ public class AddUserServlet extends HttpServlet {
 
 		// resonse Pojo as json
 		resp.setContentType("application/json");
-		resp.getWriter().println(mapper.pojoToStringAsJson(userInformation));
+		resp.getWriter().println(mapper.pojoStringToJson(userInformation));
 
 	}
 }

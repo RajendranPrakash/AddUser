@@ -16,15 +16,23 @@ public class Mapper {
 		mapper = new ObjectMapper();
 	}
 
-	public Map<String, Object> stringToMap(String stringToMap)
+	public Map<String, Object> stringToMap(String stringJson)
 			throws JsonParseException, JsonMappingException, IOException {
-		return mapper.readValue(stringToMap, new TypeReference<Map<String, Object>>() {
+		return mapper.readValue(stringJson, new TypeReference<Map<String, Object>>() {
 		});
 	}
+
+	/*
+	 * public ApiContactInformation stringToPojo(String stringJson) throws
+	 * JsonGenerationException, JsonMappingException, IOException{
+	 * //System.out.println("string to pojo "+stringJson+ "USERINFORMATION"+
+	 * mapper.readValue(stringJson, ApiContactInformation.class)); return
+	 * mapper.readValue(stringJson, ApiContactInformation.class); }
+	 */
 
 	public String objectToJson(Object stringToJsonAsString)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		return mapper.writeValueAsString(stringToJsonAsString);
 	}
-	
+
 }

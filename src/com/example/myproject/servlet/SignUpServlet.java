@@ -15,31 +15,30 @@ import com.google.appengine.api.datastore.Entity;
 public class SignUpServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
-		/*
-		 * HttpSession ses = (HttpSession) req.getAttribute("sessionUserName");
-		 * System.out.println(ses); System.out.println(session);
-		 */
-		if (session != null) {
+		System.out.println("signupget");
+		if (session != null  && session.getAttribute("sessionEmail") != null) {
 			resp.sendRedirect("dashboard");
 		} else {
 			resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			req.getRequestDispatcher("/WEB-INF/signup.html").include(req, resp);
 		}
-		// req.getRequestDispatcher("/WEB-INF/signup.html").forward(req, resp);
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String userName = req.getParameter("username");
+		String name = req.getParameter("name");
 		String password = req.getParameter("password");
+		String email = req.getParameter("email");
 		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		if (userName.length() > 0 && password.length() > 0) {
+
+		System.out.println("signuppost");
+		if (name.length() > 0 && password.length() > 0 && email.length() > 5) {
 			ContactService dbConnect = new ContactService();
-			Entity user = dbConnect.signUpUser(userName, password);
+			Entity user = dbConnect.signUpUser(name, password, email);
 			if (user == null) {
 				req.getRequestDispatcher("/WEB-INF/signup.html").include(req, resp);
 			} else {
 				HttpSession session = req.getSession();
-				session.setAttribute("sessionUserName", userName);
+				session.setAttribute("sessionEmail", email);
 				resp.sendRedirect("/dashboard");
 			}
 		} else

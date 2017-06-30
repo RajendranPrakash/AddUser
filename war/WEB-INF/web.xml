@@ -40,7 +40,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ServletLogOut</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ServletAddUser</servlet-name>
 		<servlet-class>com.example.myproject.servlet.AddUserServlet</servlet-class>
@@ -49,7 +49,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ServletAddUser</servlet-name>
 		<url-pattern>/adduser</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ServletUser</servlet-name>
 		<servlet-class>com.example.myproject.servlet.UsersServlet</servlet-class>
@@ -58,4 +58,25 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ServletUser</servlet-name>
 		<url-pattern>/user</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletLoginWithGoogle</servlet-name>
+		<servlet-class>com.example.myproject.servlet.LoginWithGoogleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletLoginWithGoogle</servlet-name>
+		<url-pattern>/loginwithgoogle</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>ServletInfoService</servlet-name>
+		<servlet-class>com.example.myproject.servlet.InfoServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletInfoService</servlet-name>
+		<url-pattern>/infoservice</url-pattern>
+	</servlet-mapping>
+
+	
 </web-app>

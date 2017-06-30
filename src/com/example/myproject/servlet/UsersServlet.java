@@ -23,11 +23,23 @@ public class UsersServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Map<String, Object> jsonResult = new LinkedHashMap<String, Object>();
-		try {
-			int limit = Integer.parseInt(req.getParameter("limit"));
-			String startCursor = req.getParameter("cursor");
+		String startCursor = req.getParameter("cursor");
+		String limitString = req.getParameter("limit");
+		int limit = 10;
+		if ( limitString != null && limitString.equals("") != true) {
+			limit = Integer.parseInt(limitString);
+			if(limit<0)
+			{
+				limit = 10;
+			}
+			else if(limit >100)
+			{
+				limit = 100;
+			}
+        }
 
-			ContactService contactService = new ContactService();
+		ContactService contactService = new ContactService();
+		try {
 			QueryResultList<Entity> queryResults = contactService.fetchUserInformationWithLimit(limit, startCursor);
 
 			jsonResult.put("ok", true);

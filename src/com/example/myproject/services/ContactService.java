@@ -47,14 +47,15 @@ public class ContactService {
 		// System.out.println("The signupuser");
 		if (user == null) {// New user register into the database
 			// System.out.println("user is going to create");
-			Entity newEntity = new Entity("Contacts", email);
-			newEntity.setProperty("userName", email);
-			newEntity.setProperty("password", password);
-			newEntity.setProperty("name", name);
-			newEntity.setProperty("email", email);
-			entityStore.put(newEntity);
+			/*user = new Entity("Contacts", email);
+			user.setProperty("userName", email);
+			user.setProperty("password", password);
+			user.setProperty("name", name);
+			user.setProperty("email", email);
+			entityStore.put(user);*/
+			return createEntity(email, name, password);
 			// System.out.println("new user is create");
-			return newEntity;
+			//return user;
 		}
 		return null;
 	}

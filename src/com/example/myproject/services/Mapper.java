@@ -8,6 +8,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jackson.JsonGenerationException;
 
 public class Mapper {
 	ObjectMapper mapper;

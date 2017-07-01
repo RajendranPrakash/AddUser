@@ -15,7 +15,6 @@ import com.google.appengine.api.datastore.Entity;
 public class SignUpServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
-		System.out.println("signupget");
 		if (session != null  && session.getAttribute("sessionEmail") != null) {
 			resp.sendRedirect("dashboard");
 		} else {
@@ -29,8 +28,6 @@ public class SignUpServlet extends HttpServlet {
 		String password = req.getParameter("password");
 		String email = req.getParameter("email");
 		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-
-		System.out.println("signuppost");
 		if (name.length() > 0 && password.length() > 0 && email.length() > 5) {
 			ContactService dbConnect = new ContactService();
 			Entity user = dbConnect.signUpUser(name, password, email);

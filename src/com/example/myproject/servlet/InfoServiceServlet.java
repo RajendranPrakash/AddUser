@@ -19,6 +19,7 @@ import com.example.myproject.services.ContactService;
 import com.example.myproject.services.HttpConnectionToURL;
 import com.example.myproject.services.Mapper;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.utils.SystemProperty;
 
 @SuppressWarnings("serial")
 public class InfoServiceServlet extends HttpServlet {
@@ -31,8 +32,17 @@ public class InfoServiceServlet extends HttpServlet {
 		URL url = new URL("https://www.googleapis.com/oauth2/v4/token");
 		HttpURLConnection httpURLConnection = null;
 		try {
-			String urlParameters = "code=" + code
-					+ "&client_id=786517267222-745ihdgu1r2so8bukav088jqkcs7n6ll.apps.googleusercontent.com&client_secret=-NsbkEDXqGqBUkRSdUDuqQcY&redirect_uri=http://localhost:8888/infoservice&grant_type=authorization_code";
+			String urlParameters;
+			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+				//remote
+				urlParameters = "code=" + code
+						+ "&client_id=786517267222-745ihdgu1r2so8bukav088jqkcs7n6ll.apps.googleusercontent.com&client_secret=-NsbkEDXqGqBUkRSdUDuqQcY&redirect_uri=http://loginwithgoogelid.appspot.com/infoservice&grant_type=authorization_code";
+			} else {
+				urlParameters = "code=" + code
+						+ "&client_id=786517267222-745ihdgu1r2so8bukav088jqkcs7n6ll.apps.googleusercontent.com&client_secret=-NsbkEDXqGqBUkRSdUDuqQcY&redirect_uri=http://localhost:8888/infoservice&grant_type=authorization_code";
+			}
+			//String urlParameters = "code=" + code
+					//+ "&client_id=786517267222-745ihdgu1r2so8bukav088jqkcs7n6ll.apps.googleusercontent.com&client_secret=-NsbkEDXqGqBUkRSdUDuqQcY&redirect_uri=http://loginwithgoogelid.appspot.com/infoservice&grant_type=authorization_code";
 			httpURLConnection = (HttpURLConnection) url.openConnection();
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

@@ -14,15 +14,15 @@ import com.google.appengine.api.datastore.Entity;
 public class LoginServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String userName = req.getParameter("username");
+		String email = req.getParameter("email");
 		String password = req.getParameter("password");
-		if (userName.length() > 0 && password.length() > 0) {
+		if (email.length() > 0 && password.length() > 0) {
 			ContactService dbConnect = new ContactService();
-			Entity user = dbConnect.userAvailability(userName, password);
+			Entity user = dbConnect.loginUser(email, password);
 			resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			if (user != null) {
 				HttpSession session = req.getSession();
-				session.setAttribute("sessionUserName", userName);
+				session.setAttribute("sessionEmail", email);
 				resp.sendRedirect("/dashboard");
 			} else {
 				req.getRequestDispatcher("/WEB-INF/login.html").include(req, resp);
@@ -32,11 +32,10 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		HttpSession session = req.getSession(false);
 		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		if (session != null) {
-			// System.out.println("uername" + (String)
-			// session.getAttribute("sessionUserName"));
+		if (session != null && session.getAttribute("sessionEmail") != null) {
 			resp.sendRedirect("/dashboard");
 		} else {
 			req.getRequestDispatcher("/WEB-INF/login.html").include(req, resp);

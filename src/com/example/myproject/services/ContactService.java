@@ -11,6 +11,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.QueryResultList;
 
 public class ContactService {
@@ -137,4 +140,14 @@ public class ContactService {
 		return preparedQuery.asQueryResultList(fetchOptionsLimit);
 
 	}
+	
+	/*public Entity fetchUserInformation(String email) {
+		Key contactKey = KeyFactory.createKey("Contacts", email);
+		Filter keyFilter =
+				new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, contactKey);
+		Query query = new Query("Contacts").setFilter(keyFilter);
+		PreparedQuery preparedQuery = entityStore.prepare(query);
+
+		return preparedQuery.asSingleEntity();
+	}*/
 }

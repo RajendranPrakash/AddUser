@@ -78,5 +78,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/infoservice</url-pattern>
 	</servlet-mapping>
 
-	
+	<servlet>
+		<servlet-name>ServletApiMe</servlet-name>
+		<servlet-class>com.example.myproject.apiservices.ApiMeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletApiMe</servlet-name>
+		<url-pattern>/api/v1/me</url-pattern>
+	</servlet-mapping>
 </web-app>

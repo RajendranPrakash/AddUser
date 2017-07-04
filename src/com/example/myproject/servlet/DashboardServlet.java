@@ -15,7 +15,7 @@ public class DashboardServlet extends HttpServlet {
 		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		HttpSession session = req.getSession(false);
 		if (session != null) {
-			req.getRequestDispatcher("/WEB-INF/welcome.html").include(req, resp);
+			req.getRequestDispatcher("/WEB-INF/welcome.html").forward(req, resp);
 			//System.out.println("welcome.html page");
 		} else {
 			resp.sendRedirect("/login");

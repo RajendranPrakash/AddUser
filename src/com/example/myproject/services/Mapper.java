@@ -15,7 +15,8 @@ public class Mapper {
 	public Mapper() {
 		mapper = new ObjectMapper();
 	}
-
+	
+	//Deserialization
 	public Map<String, Object> stringToMap(String stringJson)
 			throws JsonParseException, JsonMappingException, IOException {
 		return mapper.readValue(stringJson, new TypeReference<Map<String, Object>>() {
@@ -30,6 +31,7 @@ public class Mapper {
 	 * mapper.readValue(stringJson, ApiContactInformation.class); }
 	 */
 
+	//Serialization
 	public String objectToJson(Object stringToJsonAsString)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		return mapper.writeValueAsString(stringToJsonAsString);

@@ -68,13 +68,13 @@ public class InfoServiceServlet extends HttpServlet {
 			String JsonUserInfo = httpConnection.fetchUserInformation(url);
 
 			jsonInformation = mapper.stringToMap(JsonUserInfo);
-
+			
 			ContactService contactService = new ContactService();
 			Entity createdUser = contactService.addGoogleUser((String) jsonInformation.get("email"),
 					(String) jsonInformation.get("name"));
-
 			HttpSession session = req.getSession();
 			session.setAttribute("sessionEmail", createdUser.getProperty("email"));
+			resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			resp.sendRedirect("/login");
 
 		} catch (Exception e) {

@@ -118,6 +118,7 @@ public class ContactService {
 	}
 
 	public Entity createEntity(String email, String name, String password) {
+		//System.out.println("creating new the name  " + name);
 		Entity user = new Entity("Contacts", email);
 		user.setProperty("email", email);
 		user.setProperty("userName", email);

@@ -52,7 +52,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 	<servlet>
 		<servlet-name>ServletUser</servlet-name>
-		<servlet-class>com.example.myproject.servlet.UsersServlet</servlet-class>
+		<servlet-class>com.example.myproject.apiservices.UsersServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletUser</servlet-name>

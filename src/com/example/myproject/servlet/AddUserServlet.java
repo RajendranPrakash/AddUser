@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.myproject.pojo.UsersInformation;
+import com.example.myproject.pojo.Contact;
 import com.example.myproject.services.ContactService;
 import com.example.myproject.services.HttpConnectionToURL;
 import com.example.myproject.services.Mapper;
@@ -29,7 +29,7 @@ public class AddUserServlet extends HttpServlet {
 		Map<String, Object> mapData = mapper.stringToMap(userInformationFromJson);
 
 		// Assignment to POJO
-		UsersInformation userInformation = new UsersInformation();
+		Contact userInformation = new Contact();
 		userInformation.setName((String) mapData.get("name") + " " + (String) mapData.get("surname"));
 		userInformation.setUserName((String) mapData.get("email"));
 		userInformation.setEmail((String) mapData.get("email"));

@@ -1,4 +1,4 @@
-window.onload = userInformation;
+//window.onload = userInformation;
 function userInformation() {
 	var httpRequest;
 	if (window.XMLHttpRequest) {

@@ -1,6 +1,6 @@
 package com.example.myproject.services;
 
-import com.example.myproject.pojo.UsersInformation;
+import com.example.myproject.pojo.Contact;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -80,7 +80,7 @@ public class ContactService {
 
 	// Add Entity (userInformation) in to database if not exist in the database
 	// and returns Entity
-	public void addUser(UsersInformation userInformation) {
+	public void addUser(Contact userInformation) {
 		Entity user = checkUser(userInformation.getEmail());
 		if (user == null) {
 			// System.out.println("user is going to create");

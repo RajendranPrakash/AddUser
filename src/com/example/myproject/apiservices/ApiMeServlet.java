@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.example.myproject.pojo.UsersInformation;
+import com.example.myproject.pojo.Contact;
 import com.example.myproject.services.ContactService;
 import com.example.myproject.services.Mapper;
 import com.google.appengine.api.datastore.Entity;
@@ -28,7 +28,7 @@ public class ApiMeServlet extends HttpServlet{
 			//Entity userInfo = apiRequest.fetchUserInformation(emailId);
 			Entity userInfo = apiRequest.checkUser(emailId);
 			if(userInfo != null){
-				UsersInformation userInformation = new UsersInformation();
+				Contact userInformation = new Contact();
 				userInformation.setEmail((String) userInfo.getProperty("email"));
 				userInformation.setName((String)userInfo.getProperty("name"));
 				userInformation.setUserName((String)userInfo.getProperty("userName"));

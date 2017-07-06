@@ -12,7 +12,7 @@
 		<input type="submit" value="Logout">
 	</form>
 	<div id="usertable">
-			Users: <input type="button" value="Add User"> 
+			Users: <input type="button" id="adduserid" onClick="addNewUser()" value="Add User"> 
 		<div id="rightinfo">
 			Limit: <select name="limit" id="limitid" onchange="allUser(this.value)">
 				<option value="10" selected>10</option>
@@ -41,5 +41,6 @@
 </body>
 <script src="Javascript/userInfo.js"></script>
 <script src="Javascript/userscontact.js"></script>
+<script src="Javascript/addnewuser.js"></script>
 <link rel="stylesheet" type="text/css" href="css/script.css">
 </html>

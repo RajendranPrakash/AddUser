@@ -11,9 +11,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.QueryResultList;
 
 public class ContactService {
@@ -117,6 +114,18 @@ public class ContactService {
 		// return user;
 	}
 
+	public String deleteUser(String email){
+		Entity user = checkUser(email);
+		if(user != null)
+		{
+			Key userKey = KeyFactory.createKey("Contacts", email);
+			entityStore.delete(userKey);
+			System.out.println("user deleted successfully");
+			return "Success";
+		}
+		return "Failure";
+	}
+	
 	public Entity createEntity(String email, String name, String password) {
 		//System.out.println("creating new the name  " + name);
 		Entity user = new Entity("Contacts", email);
@@ -129,6 +138,16 @@ public class ContactService {
 		return user;
 	}
 
+	public Entity updateUserName(String emailId,String newName){
+		Entity user= checkUser(emailId);
+		if(user != null)
+		{
+			user.setProperty("name", newName);
+			entityStore.put(user);
+		}
+		return user;
+	}
+	
 	public QueryResultList<Entity> fetchUserInformationWithLimit(int limit, String startCursor) {
 
 		FetchOptions fetchOptionsLimit = FetchOptions.Builder.withLimit(limit);

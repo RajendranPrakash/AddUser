@@ -11,7 +11,7 @@
 	<form action="/logout">
 		<input type="submit" value="Logout">
 	</form>
-	<div id="usertable">
+	<div class="usertable">
 			Users: <input type="button" id="adduserid" onClick="addNewUser()" value="Add User"> 
 		<div id="rightinfo">
 			Limit: <select name="limit" id="limitid" onchange="allUser(this.value)">
@@ -25,7 +25,7 @@
 			<thead>
 				<tr>
 					<td>User Name</td>
-					<td>Name</td>
+					<td>Email</td>
 					<td>Option</td>
 				</tr>
 			</thead>
@@ -38,9 +38,24 @@
 		</div>
 	</div>
 
+<!--div class="usertable" id="editUserName">
+<table>
+<tr>
+<td>User name: </td>
+<td><input type="textbox" name="userName" id="updateUserName"></td>
+</tr>
+<tr>
+<td>EmailId: </td>
+<td><input type="textbox" name="emailId" id="updateUserEmail"><br></td>
+<tr>
+<td colspan="2"><input type="button" value="Save" onClick="alert('working fine')"></td>
+</tr>
+</table>
+</div-->
 </body>
 <script src="Javascript/userInfo.js"></script>
 <script src="Javascript/userscontact.js"></script>
 <script src="Javascript/addnewuser.js"></script>
+<script src="Javascript/deleteuser.js"></script>
 <link rel="stylesheet" type="text/css" href="css/script.css">
 </html>

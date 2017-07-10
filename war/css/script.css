@@ -1,4 +1,4 @@
-#nextButton,#backButton{
+#nextButton,#backButton,#editUserName{
 	display: none
 }
 
@@ -10,9 +10,10 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 }
-#usertable{
+
+.usertable{
 	margin: auto;
-    width: 50%;
+    width: 75%;
     padding: 10px;
 }
 

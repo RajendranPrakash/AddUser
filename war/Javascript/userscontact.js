@@ -36,7 +36,7 @@ function retriveUser(limit,cursor) {
 			}
 			else
 				for(var i = 0 ; i< numberOfUser; i++){
-					addUser += "<tr><td>"+userData[i].name+"</td><td>"+userData[i].email+"</td><td>option</td></tr>";
+					addUser += "<tr><td>"+userData[i].name+"</td><td>"+userData[i].email+"</td><td><input type='button' value='Delete' onclick=\"deleteUserInfo('"+userData[i].email+"')\"> <input type='button' value='Edit' onclick=\"updateUserdiv('"+userData[i].email+"')\"></td></tr>";
 				}
 			if(userInfoWithCursor.hasOwnProperty('cursor')){
 				cursorindex = cursorindex + 1;
@@ -86,6 +86,12 @@ function retriveUser(limit,cursor) {
 
 function nextSetOfUser(){
 	limit = document.getElementById("limitid").value;
+	retriveUser(limit,userCursorInfo[cursorindex]);
+}
+
+function presentSetOfUser(){
+	limit = document.getElementById("limitid").value;
+	cursorindex = cursorindex - 1;
 	retriveUser(limit,userCursorInfo[cursorindex]);
 }
 

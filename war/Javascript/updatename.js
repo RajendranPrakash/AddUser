@@ -29,7 +29,7 @@ function updateUserName(){
 }
 
 function updateUserdiv(editName,editUserEmail){
-	alert(editUserEmail);
+	//alert(editUserEmail);
 	document.getElementById('editUserName').style.display = "inline";
 	document.getElementById('updateUserName').value = editName;
 	document.getElementById('updateUserEmail').value = editUserEmail;

@@ -1,6 +1,8 @@
 package com.example.myproject.apiservices;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,7 +19,6 @@ import com.example.myproject.services.Mapper;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.QueryResultList;
 
-
 public class UsersServlet extends HttpServlet {
 
 	/**
@@ -26,59 +27,109 @@ public class UsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 5386139457678750764L;
 
 	public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("update method in user servlet");
-		/*HttpSession session = req.getSession(false);
-		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-		if (session != null && session.getAttribute("sessionEmail") != null) {
-			Mapper mapper = new Mapper();
-			Map<String, Object> bodyMessage = mapper.stringToMap(getBody(req));
-			String emailId = (String)bodyMessage.get("email");
-			String name = (String)bodyMessage.get("newName");
-			ContactService userInfoDelete = new ContactService();
-			Entity updatedUserInfo = userInfoDelete.updateUserName(emailId,name);
-			if(updatedUserInfo == null)
-				System.out.println("No User Found");
-			else
-				System.out.println("User Name changed");
-			resp.sendRedirect("/dashboard");
-		} else {
-			req.getRequestDispatcher("/WEB-INF/login.html").include(req, resp);
-		}*/
-	}
-	
 
-	public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		
-		HttpSession session = req.getSession(false);
+		Map<String, String> responseMessage = new LinkedHashMap<String, String>();
 		Mapper mapper = new Mapper();
 		resp.setContentType("application/Json");
-		Map<String,String> responseMessage = new LinkedHashMap<String,String>();
+		System.out.println("update method in user servlet");
+		HttpSession session = req.getSession(false);
 		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
 		if (session != null && session.getAttribute("sessionEmail") != null) {
-			String emailId = req.getPathInfo().substring(1);
-			System.out.println("delete method called "+emailId);
+			Map<String, Object> bodyMessage = mapper.stringToMap(getBody(req));
+			String emailId = (String) bodyMessage.get("email");
+			String name = (String) bodyMessage.get("newName");
 			ContactService userInfoDelete = new ContactService();
-			if(userInfoDelete.deleteUser(emailId).equals("Success"))
-			{
-				responseMessage.put("Operation","Success");				
-			}
-			else{
-				responseMessage.put("Operation","Failure");
+			if (userInfoDelete.updateUserName(emailId, name).equals("Success")) {
+				System.out.println("User Found name renamed");
+				responseMessage.put("Operation", "Success");
+			} else {
+				System.out.println("No User found");
+				responseMessage.put("Operation", "Failure");
 				responseMessage.put("Message", "Emailid doesn't exist");
 			}
-			//resp.getWriter().println(mapper.objectToJson(responseMessage));
-			
+			// resp.sendRedirect("/dashboard");
 		} else {
-			//req.getRequestDispatcher("/WEB-INF/login.html").include(req, resp);
 			responseMessage.put("Operation", "Failure");
 			responseMessage.put("Message", "Authentication required");
-			//resp.getWriter().println(mapper.objectToJson(responseMessage));
+			// req.getRequestDispatcher("/WEB-INF/login.html").include(req,
+			// resp);
 		}
+
 		resp.getWriter().println(mapper.objectToJson(responseMessage));
 	}
 
+	public String getBody(HttpServletRequest request) throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		return response.toString();
+	}
 
+	public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		Map<String, String> responseMessage = new LinkedHashMap<String, String>();
+		Mapper mapper = new Mapper();
+		resp.setContentType("application/Json");
+
+		HttpSession session = req.getSession(false);
+		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		if (session != null && session.getAttribute("sessionEmail") != null) {
+			Map<String, Object> bodyMessage = mapper.stringToMap(getBody(req));
+			String emailId = (String) bodyMessage.get("email");
+			// System.out.println("delete method called to call datastore
+			// services for "+emailId);
+			ContactService userInfoDelete = new ContactService();
+			if (userInfoDelete.deleteUser(emailId).equals("Success")) {
+				responseMessage.put("Operation", "Success");
+			} else {
+				responseMessage.put("Operation", "Failure");
+				responseMessage.put("Message", "Emailid doesn't exist");
+			}
+			// responseMessage.put("Operation",userInfoDelete.deleteUser(emailId));
+			// resp.getWriter().println(mapper.objectToJson(responseMessage));
+
+		} else {
+			// req.getRequestDispatcher("/WEB-INF/login.html").include(req,
+			// resp);
+			responseMessage.put("Operation", "Failure");
+			responseMessage.put("Message", "Authentication required");
+			// resp.getWriter().println(mapper.objectToJson(responseMessage));
+		}
+		resp.getWriter().println(mapper.objectToJson(responseMessage));
+		/*
+		 * HttpSession session = req.getSession(false); Mapper mapper = new
+		 * Mapper(); resp.setContentType("application/Json"); Map<String,String>
+		 * responseMessage = new LinkedHashMap<String,String>();
+		 * resp.setHeader("Cache-Control",
+		 * "no-cache, no-store, must-revalidate"); if (session != null &&
+		 * session.getAttribute("sessionEmail") != null) {
+		 * //System.out.println(req.getRequestURL()); String emailId =
+		 * req.getPathInfo().substring(1);
+		 * System.out.println("delete method called with the url "+req.
+		 * getRequestURL());
+		 * //System.out.println("delete method called with the path info "+req.
+		 * getPathInfo());
+		 * System.out.println("the email id received to delete is "+emailId);
+		 * //System.out.println("delete method called "+emailId); ContactService
+		 * userInfoDelete = new ContactService();
+		 * if(userInfoDelete.deleteUser(emailId).equals("Success")) {
+		 * responseMessage.put("Operation","Success"); } else{
+		 * responseMessage.put("Operation","Failure");
+		 * responseMessage.put("Message", "Emailid doesn't exist"); }
+		 * //resp.getWriter().println(mapper.objectToJson(responseMessage));
+		 * 
+		 * } else {
+		 * //req.getRequestDispatcher("/WEB-INF/login.html").include(req, resp);
+		 * responseMessage.put("Operation", "Failure");
+		 * responseMessage.put("Message", "Authentication required");
+		 * //resp.getWriter().println(mapper.objectToJson(responseMessage)); }
+		 * resp.getWriter().println(mapper.objectToJson(responseMessage));
+		 */
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -110,8 +161,6 @@ public class UsersServlet extends HttpServlet {
 				Contact userInformation = new Contact();
 				userInformation.setEmail((String) entity.getProperty("email"));
 				userInformation.setName((String) entity.getProperty("name"));
-				// userInformation.setPassword((String)
-				// entity.getProperty("password"));
 				userInformation.setUserName((String) entity.getProperty("userName"));
 
 				entities.add(userInformation);
@@ -129,7 +178,7 @@ public class UsersServlet extends HttpServlet {
 			jsonResult.put("ok", false);
 			jsonResult.put("msg", exceptionObject);
 		}
-		//System.out.println("hello in user api");
+		// System.out.println("hello in user api");
 		resp.setContentType("application/json");
 		resp.getWriter().println(new Mapper().objectToJson(jsonResult));
 

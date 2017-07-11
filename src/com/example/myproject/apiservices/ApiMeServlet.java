@@ -22,7 +22,7 @@ public class ApiMeServlet extends HttpServlet{
 		HttpSession session = req.getSession(false);
 		if(session != null && session.getAttribute("sessionEmail") != null){
 			String emailId = (String) session.getAttribute("sessionEmail");
-			//System.out.println("email id is " + emailId);
+			//System.out.println("email id in API services is " + emailId);
 			
 			ContactService apiRequest = new ContactService();
 			//Entity userInfo = apiRequest.fetchUserInformation(emailId);
@@ -42,7 +42,7 @@ public class ApiMeServlet extends HttpServlet{
 			}
 		}
 		else{
-			System.out.println("login first");
+			System.out.println("login first, Authentication required");
 		}
 	}
 

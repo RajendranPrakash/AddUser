@@ -7,8 +7,9 @@ function deleteUserInfo(deleteEmailId){
 		} else {
 			httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		url = "/user/"+deleteEmailId;
-		httpRequest.open("DELETE", url , true);
+		var parameter = {"email":deleteEmailId};
+		var parameterAsJson = JSON.stringify(parameter);
+		httpRequest.open("DELETE", "/user" , true);
 		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		httpRequest.onreadystatechange = function() {
 			if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -17,19 +18,11 @@ function deleteUserInfo(deleteEmailId){
 				if(obj.Operation === "Success")
 				{
 					alert("Successfully deleted");
+					document.getElementById("userinfotable").innerHTML = "";
 					presentSetOfUser();
 				}
-				
 			}
 		}
-		httpRequest.send();
+		httpRequest.send(parameterAsJson);
 	}
 }
-
-/*function updateUserdiv(editUser){
-	alert(editUser);
-	document.getElementById('editUserName').style.display = "inline";
-	document.getElementById('updateUserName').value = "hello";
-	document.getElementById('updateUserEmail').value = editUser;
-	document.getElementById("updateUserEmail").readOnly = true;
-}*/

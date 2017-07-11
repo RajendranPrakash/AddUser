@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 @SuppressWarnings("serial")
 public class DashboardServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		HttpSession session = req.getSession(false);
 		if (session != null && session.getAttribute("sessionEmail") != null) {

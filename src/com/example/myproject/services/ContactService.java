@@ -1,6 +1,6 @@
 package com.example.myproject.services;
 
-import com.example.myproject.pojo.UsersInformation;
+import com.example.myproject.pojo.Contact;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -11,9 +11,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.QueryResultList;
 
 public class ContactService {
@@ -47,40 +44,30 @@ public class ContactService {
 	// (already user exist in that name)
 	public Entity signUpUser(String name, String password, String email) {
 		Entity user = checkUser(email);
-		// System.out.println("The signupuser");
-		if (user == null) {// New user register into the database
-			// System.out.println("user is going to create");
-			/*user = new Entity("Contacts", email);
-			user.setProperty("userName", email);
-			user.setProperty("password", password);
-			user.setProperty("name", name);
-			user.setProperty("email", email);
-			entityStore.put(user);*/
+		if (user == null) {
 			return createEntity(email, name, password);
-			// System.out.println("new user is create");
-			//return user;
 		}
 		return null;
 	}
 
 	// return entity if the user exist or else null (No user found)
 	public Entity checkUser(String email) {
+
 		Key k = KeyFactory.createKey("Contacts", email);
 		try {
 			Entity entityAvailable = entityStore.get(k);
-			// User available in the database
-			// System.out.println("The user is "+entityAvailable);
 			return entityAvailable;
+
 		} catch (EntityNotFoundException excep) {
-			// No such user found
-			// System.out.println("No such user found ");
-			return null;
+			// return null;
+			System.out.println("Exception occured" + excep);
 		}
+		return null;
 	}
 
 	// Add Entity (userInformation) in to database if not exist in the database
 	// and returns Entity
-	public void addUser(UsersInformation userInformation) {
+	public void addUser(Contact userInformation) {
 		Entity user = checkUser(userInformation.getEmail());
 		if (user == null) {
 			// System.out.println("user is going to create");
@@ -117,8 +104,31 @@ public class ContactService {
 		// return user;
 	}
 
+	public String deleteUser(String email) {
+		System.out.println("email id going to delete by the delete function " + email);
+		Entity user = checkUser(email);
+		if (user != null) {
+			Key userKey = KeyFactory.createKey("Contacts", email);
+			entityStore.delete(userKey);
+			System.out.println("user deleted successfully");
+			return "Success";
+		} else {
+			System.out.println("user didn't found");
+			return "Failure";
+		}
+
+		/*
+		 * Entity user = fetchUserInformation(email);
+		 * System.out.println("entity info in the delete function "+user);
+		 * if(user != null) { Key userKey = KeyFactory.createKey("Contacts",
+		 * email); entityStore.delete(userKey);
+		 * System.out.println("user deleted successfully"); return "Success"; }
+		 * else{ System.out.println("user didn't found"); return "Failure"; }
+		 */
+	}
+
 	public Entity createEntity(String email, String name, String password) {
-		//System.out.println("creating new the name  " + name);
+		// System.out.println("creating new the name " + name);
 		Entity user = new Entity("Contacts", email);
 		user.setProperty("email", email);
 		user.setProperty("userName", email);
@@ -129,6 +139,17 @@ public class ContactService {
 		return user;
 	}
 
+	public String updateUserName(String emailId, String newName) {
+		System.out.println("update username function");
+		Entity user = checkUser(emailId);
+		if (user != null) {
+			user.setProperty("name", newName);
+			entityStore.put(user);
+			return "Success";
+		}
+		return "Failure";
+	}
+
 	public QueryResultList<Entity> fetchUserInformationWithLimit(int limit, String startCursor) {
 
 		FetchOptions fetchOptionsLimit = FetchOptions.Builder.withLimit(limit);
@@ -137,18 +158,21 @@ public class ContactService {
 		}
 		Query query = new Query("Contacts");
 		PreparedQuery preparedQuery = entityStore.prepare(query);
-
 		return preparedQuery.asQueryResultList(fetchOptionsLimit);
 
 	}
-	
-	/*public Entity fetchUserInformation(String email) {
-		Key contactKey = KeyFactory.createKey("Contacts", email);
-		Filter keyFilter =
-				new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, contactKey);
-		Query query = new Query("Contacts").setFilter(keyFilter);
-		PreparedQuery preparedQuery = entityStore.prepare(query);
 
-		return preparedQuery.asSingleEntity();
-	}*/
+	/*
+	 * public Entity fetchUserInformation(String email) { System.out.
+	 * println("Using query The value of email going to search using key "+email
+	 * ); //Key k = KeyFactory.createKey("Contacts", email); Key contactKey =
+	 * KeyFactory.createKey("Contacts", email);
+	 * System.out.println("Using query The value of key going to search "
+	 * +contactKey); Filter keyFilter = new
+	 * FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL,
+	 * contactKey); Query query = new Query("Contacts").setFilter(keyFilter);
+	 * PreparedQuery preparedQuery = entityStore.prepare(query);
+	 * 
+	 * return preparedQuery.asSingleEntity(); }
+	 */
 }

@@ -1,6 +1,6 @@
 package com.example.myproject.pojo;
 
-public class UsersInformation {
+public class Contact {
 	private String name, email, password, userName;
 	public String getName() {
 		return name;

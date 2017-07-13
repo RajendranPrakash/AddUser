@@ -26,7 +26,7 @@ public class ApiMeServlet extends HttpServlet{
 			
 			ContactService apiRequest = new ContactService();
 			//Entity userInfo = apiRequest.fetchUserInformation(emailId);
-			Entity userInfo = apiRequest.checkUser(emailId);
+			Entity userInfo = apiRequest.getId(emailId);
 			if(userInfo != null){
 				Contact userInformation = new Contact();
 				userInformation.setEmail((String) userInfo.getProperty("email"));

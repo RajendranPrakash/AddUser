@@ -18,6 +18,7 @@ function updateUserName(){
 				document.getElementById('editUserName').style.display = "none";
 				document.getElementById("userinfotable").innerHTML = "";
 				presentSetOfUser();
+				onloadRetrival();
 			}
 			else{
 				alert("Sorry No updation happened");

@@ -86,14 +86,23 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ServletApiMe</servlet-name>
 		<url-pattern>/api/v1/me</url-pattern>
 	</servlet-mapping>
-	
-		<servlet>
+
+	<servlet>
 		<servlet-name>ServletApiServiceForJoke</servlet-name>
 		<servlet-class>com.example.myproject.apiservices.ApiServiceForJokeServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletApiServiceForJoke</servlet-name>
 		<url-pattern>/api/v1/joke</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>ObjectifyFilter</filter-name>
+		<filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ObjectifyFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 </web-app>

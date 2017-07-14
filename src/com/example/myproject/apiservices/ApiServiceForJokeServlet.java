@@ -15,14 +15,9 @@ import com.example.myproject.pojo.Jokes;
 import com.example.myproject.services.HttpConnectionToURL;
 import com.example.myproject.services.Mapper;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultList;
+import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.cmd.Query;
 
 public class ApiServiceForJokeServlet extends HttpServlet {
 
@@ -35,47 +30,43 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		String cursor = req.getParameter("cursor");
-		String limitFromLink = req.getParameter("limit");
+		String cursorStr = req.getParameter("cursor");
+		String limitString = req.getParameter("limit");
 		int limit = 10;
-		if (limitFromLink != null && limitFromLink.equals("") != true) {
-			limit = Integer.parseInt(limitFromLink);
+		if (limitString != null && limitString.equals("") != true) {
+			limit = Integer.parseInt(limitString);
 			if (limit < 0) {
 				limit = 10;
 			}
 		}
 
-		FetchOptions fetchOptionsLimit = FetchOptions.Builder.withLimit(limit);
-		if (cursor != null) {
-			fetchOptionsLimit.startCursor(Cursor.fromWebSafeString(cursor));
-		}
-
-		Query query = new Query("Jokes");
-		DatastoreService entityStore = DatastoreServiceFactory.getDatastoreService();
-		PreparedQuery preparedQuery = entityStore.prepare(query);
-		QueryResultList<Entity> queryResults = preparedQuery.asQueryResultList(fetchOptionsLimit);
+		Query<Jokes> query = ObjectifyService.ofy().load().type(Jokes.class).limit(limit);
+		if (cursorStr != null)
+			query = query.startAt(Cursor.fromWebSafeString(cursorStr));
 
 		Map<String, Object> jokesAndCursorJson = new LinkedHashMap<String, Object>();
 		ArrayList<Object> jokesAsArrayList = new ArrayList<Object>();
-		for (Entity jokeFromQueryResultSet : queryResults) {
-			// System.out.println("the entities "+jokeFromQueryResultSet);
-			Jokes joke = new Jokes();
-			joke.setId((long) jokeFromQueryResultSet.getKey().getId());
-			joke.setJoke((String) jokeFromQueryResultSet.getProperty("joke"));
-			joke.setCategory((ArrayList<String>) jokeFromQueryResultSet.getProperty("category"));
-
+		boolean continu = false;
+		QueryResultIterator<Jokes> iterator = query.iterator();
+		while (iterator.hasNext()) {
+			Jokes joke = iterator.next();
+			System.out.println("hte id of car " + joke.getId());
 			jokesAsArrayList.add(joke);
+			continu = true;
 		}
 		jokesAndCursorJson.put("Jokes", jokesAsArrayList);
-		String cursorString = queryResults.getCursor().toWebSafeString();
 
+		String cursorString = null;
+		if (continu) {
+			cursorString = iterator.getCursor().toWebSafeString();
+			System.out.println("The cursor " + cursorString);
+		}
 		if (jokesAsArrayList.size() != 0)
 			jokesAndCursorJson.put("cursor", cursorString);
 
 		System.out.println(" data is going to return as json ");
 		resp.setContentType("application/json");
 		resp.getWriter().println(new Mapper().objectToJson(jokesAndCursorJson));
-
 	}
 
 	@SuppressWarnings("unchecked")

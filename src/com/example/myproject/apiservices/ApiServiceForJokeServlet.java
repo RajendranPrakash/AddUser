@@ -3,7 +3,9 @@ package com.example.myproject.apiservices;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -30,6 +32,17 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		/*String category = req.getParameter("category");
+		
+		Query<Jokes> jokesFromDatastore = ObjectifyService.ofy().load().type(Jokes.class).filter("category",category);
+		QueryResultIterator<Jokes> jokes = jokesFromDatastore.iterator();
+		while (jokes.hasNext()) {
+			Jokes joke = jokes.next();
+			System.out.println(" id of car " + joke.getId());
+		}
+		*/
+		
+		String category = req.getParameter("category");
 		String cursorStr = req.getParameter("cursor");
 		String limitString = req.getParameter("limit");
 		int limit = 10;
@@ -40,7 +53,13 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 			}
 		}
 
-		Query<Jokes> query = ObjectifyService.ofy().load().type(Jokes.class).limit(limit);
+		Query<Jokes> query;
+		if(category == null)
+			query = ObjectifyService.ofy().load().type(Jokes.class).limit(limit);
+		else{
+			query = ObjectifyService.ofy().load().type(Jokes.class).filter("category",category).limit(limit);
+		}
+		 
 		if (cursorStr != null)
 			query = query.startAt(Cursor.fromWebSafeString(cursorStr));
 
@@ -50,7 +69,7 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 		QueryResultIterator<Jokes> iterator = query.iterator();
 		while (iterator.hasNext()) {
 			Jokes joke = iterator.next();
-			System.out.println("hte id of car " + joke.getId());
+			//System.out.println(" id of car " + joke.getId());
 			jokesAsArrayList.add(joke);
 			continu = true;
 		}
@@ -59,7 +78,7 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 		String cursorString = null;
 		if (continu) {
 			cursorString = iterator.getCursor().toWebSafeString();
-			System.out.println("The cursor " + cursorString);
+			//System.out.println("The cursor " + cursorString);
 		}
 		if (jokesAsArrayList.size() != 0)
 			jokesAndCursorJson.put("cursor", cursorString);
@@ -93,7 +112,7 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 			Jokes jokesAlongCategory = new Jokes();
 			jokesAlongCategory.setId((int) valueAsJson.get("id"));
 			jokesAlongCategory.setJoke((String) valueAsJson.get("joke"));
-			ArrayList<String> categoryList = (ArrayList<String>) valueAsJson.get("categories");
+			List<String> categoryList = (List<String>) valueAsJson.get("categories");
 			jokesAlongCategory.setCategory(categoryList);
 
 			ObjectifyService.ofy().save().entities(jokesAlongCategory).now();

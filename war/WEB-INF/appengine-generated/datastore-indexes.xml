@@ -1,0 +1,12 @@
+<!-- Indices written at Fri, 14 Jul 2017 17:34:18 IST -->
+<!-- 
+<datastore-indexes/>
+-->
+
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes
+  autoGenerate="true">
+    <datastore-index kind="Jokes" ancestor="false">
+        <property name="category" direction="asc" />
+    </datastore-index>
+</datastore-indexes>

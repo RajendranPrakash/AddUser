@@ -95,6 +95,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ServletApiServiceForJoke</servlet-name>
 		<url-pattern>/api/v1/joke</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ServletForJoke</servlet-name>
+		<servlet-class>com.example.myproject.jokeservlet.JokeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletForJoke</servlet-name>
+		<url-pattern>/jokes</url-pattern>
+	</servlet-mapping>
 
 	<filter>
 		<filter-name>ObjectifyFilter</filter-name>

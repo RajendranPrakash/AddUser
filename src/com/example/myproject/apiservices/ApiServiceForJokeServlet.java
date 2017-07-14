@@ -53,12 +53,15 @@ public class ApiServiceForJokeServlet extends HttpServlet {
 			}
 		}
 
-		Query<Jokes> query;
-		if(category == null)
+		Query<Jokes> query = ObjectifyService.ofy().load().type(Jokes.class).limit(limit);
+		if(category != null)
+			query = query.filter("category",category);
+		
+		/*if(category == null)
 			query = ObjectifyService.ofy().load().type(Jokes.class).limit(limit);
 		else{
 			query = ObjectifyService.ofy().load().type(Jokes.class).filter("category",category).limit(limit);
-		}
+		}*/
 		 
 		if (cursorStr != null)
 			query = query.startAt(Cursor.fromWebSafeString(cursorStr));
